@@ -5,11 +5,41 @@ var T = require('./index'),
   followList,
   whitelistedWords;
 
-followList = [33057154, 1605891337, 609718712, 14894250, 2792078121, 18185124, 26554000, 2332401396, 468290519, 409435591, 233430873, 1705885393, 159642250, 14426771, 2604068238, 1890842214, 17093617, 2670122929, 259725229, 25458378]; //JeffSheehan, GrowthHackerAm, GrowthHackingWP, fab_brianson, m1lem, jeffbullas, RebekahRadice, loveandstartups, SharonTighe, Onboardly, Notebook, GrowthHackers, GrowthHacker, SeanEllis, thepressfarm, seotomize, hootsuite, GrowthHackerSEO, ValaAfshar, AskAaronLee
+followList = [33057154, //JeffSheehan 
+  1605891337, //GrowthHackerAm
+  609718712, //GrowthHackingWP
+  14894250, //fab_brianson
+  2792078121, //m1lem
+  18185124, //jeffbullas
+  26554000, //RebekahRadice
+  2332401396, //loveandstartups
+  468290519, //SharonTighe
+  409435591, //Onboardly
+  233430873, //Notebook
+  1705885393, //GrowthHackers
+  159642250, //GrowthHacker
+  14426771, //SeanEllis
+  2604068238, //thepressfarm
+  1890842214, //seotomize
+  17093617, //hootsuite
+  2670122929, //GrowthHackerSEO
+  259725229, //ValaAfshar
+  25458378, // AskAaronLee
+  1344951, //wired
+  816653, //techcrunch
+  112243365, //mashabletech
+  14372486, //engadget
+  1333467482, //coindesk
+  2207129125, //cointelegraph
+  1297100576, //foundr
+  10638782, //danmartell
+  ]
 
 var statusStream = T.stream('statuses/filter', {
   follow: followList
 });
+
+//https://tweeterid.com
 
 statusStream.on('tweet', function(tweet) {
   if (followList.indexOf(tweet.user.id) > -1 && !tweet.retweeted_status) {
@@ -30,6 +60,34 @@ statusStream.on('tweet', function(tweet) {
       lowercaseTweet.indexOf('startup') === -1 &&
       lowercaseTweet.indexOf('entrepreneur') === -1 &&
       lowercaseTweet.indexOf('blog') === -1 &&
+      lowercaseTweet.indexOf('tech') === -1 &&
+      lowercaseTweet.indexOf('javascript') === -1 &&
+      lowercaseTweet.indexOf('deep learning') === -1 &&
+      lowercaseTweet.indexOf('artificial intelligence') === -1 &&
+      lowercaseTweet.indexOf('machine learning') === -1 &&
+      lowercaseTweet.indexOf('startup') === -1 &&
+      lowercaseTweet.indexOf('code') === -1 &&
+      lowercaseTweet.indexOf('security') === -1 &&
+      lowercaseTweet.indexOf('nodejs') === -1 &&
+      lowercaseTweet.indexOf('ios') === -1 &&
+      lowercaseTweet.indexOf('swift') === -1 &&
+      lowercaseTweet.indexOf('android') === -1 &&
+      lowercaseTweet.indexOf('java') === -1 &&
+      lowercaseTweet.indexOf('apple') === -1 &&
+      lowercaseTweet.indexOf('uber') === -1 &&
+      lowercaseTweet.indexOf('google') === -1 &&
+      lowercaseTweet.indexOf('nvidia') === -1 &&
+      lowercaseTweet.indexOf('microsoft') === -1 &&
+      lowercaseTweet.indexOf('facebook') === -1 &&
+      lowercaseTweet.indexOf('crypto') === -1 &&
+      lowercaseTweet.indexOf('bitcoin') === -1 &&
+      lowercaseTweet.indexOf('ethereum') === -1 &&
+      lowercaseTweet.indexOf('litecoin') === -1 &&
+      lowercaseTweet.indexOf('blockchain') === -1 &&
+      lowercaseTweet.indexOf('Elon') === -1 &&
+      lowercaseTweet.indexOf('Musk') === -1 &&
+      lowercaseTweet.indexOf('leadership') === -1 &&
+      lowercaseTweet.indexOf('vision') === -1 &&
       tweet.user.id !== 2246032237 && //iamjtsuccess
       tweet.user.id !== 25458378 //AskAaronLee
     ) {
