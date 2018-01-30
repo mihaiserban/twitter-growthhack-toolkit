@@ -1,9 +1,10 @@
-var T = require('./index'),
-  utils = require('./utils'),
-  notifier = require('node-notifier'),
-  argv = require('minimist')(process.argv.slice(2)),
-  followList,
-  whitelistedWords;
+var T = require('./index')
+var utils = require('./utils')
+var notifier = require('node-notifier')
+var argv = require('minimist')(process.argv.slice(2))
+
+var followList;
+var whitelistedWords;
 
 followList = [33057154, //JeffSheehan 
   1605891337, //GrowthHackerAm
@@ -102,9 +103,8 @@ statusStream.on('tweet', function(tweet) {
     var lowercaseTweet = tweet.text.toLowerCase();
 
     var result = containsAny(lowercaseTweet, keywords);
-    console.log("String was found in substring " + result);
 
-    if (!result.length &&
+    if (!result &&
       tweet.user.id !== 2246032237 && //iamjtsuccess
       tweet.user.id !== 25458378 //AskAaronLee
     ) {
@@ -112,6 +112,7 @@ statusStream.on('tweet', function(tweet) {
       console.log('-----');
       return;
     }
+
     T.post('statuses/update', {
       status: tweet.text
     }, function(err, data, response) {
