@@ -3,6 +3,12 @@ var utils = require('./utils')
 var notifier = require('node-notifier')
 var argv = require('minimist')(process.argv.slice(2))
 
+var AYLIENTextAPI = require('aylien_textapi');
+var textapi = new AYLIENTextAPI({
+  application_id: process.env.AYLIEN_ID,
+  application_key: process.env.AYLIEN_KEY,
+});
+
 var followList;
 var whitelistedWords;
 
@@ -89,21 +95,38 @@ let keywords = [
 
 function postTweet(tweet) {
   lastTweetDate = new Date(); //update date
-  T.post('statuses/update', {
-    status: tweet.text
-  }, function(err, data, response) {
-    if (err) {
-      console.log('Error updating status')
-      console.log('-----');
-      return;
+
+  textapi.hashtags({
+    text: tweet.text
+  }, function(error, response) {
+    if (error === null) {
+      console.log(response.hashtags);
+
+      var text = tweet.text
+
+      if (response.hashtags.length) {
+        text += ' ' + response.hashtags.join(' ');
+      }
+
+      T.post('statuses/update', {
+        status: text
+      }, function(err, data, response) {
+        if (err) {
+          console.log('Error updating status')
+          console.log('-----');
+          return;
+        }
+        notifier.notify({
+          'title': '@' + tweet.user.screen_name + ' tweeted.',
+          'message': text
+        });
+        console.log('Status updated successfully. ' + new Date())
+        console.log('-----');
+      });
     }
-    notifier.notify({
-      'title': '@' + tweet.user.screen_name + ' tweeted.',
-      'message': tweet.text
-    });
-    console.log('Status updated successfully. ' + new Date())
-    console.log('-----');
   });
+
+
 }
 
 function containsAny(str, substrings) {
