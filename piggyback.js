@@ -35,6 +35,60 @@ followList = [33057154, //JeffSheehan
   10638782, //danmartell
   ]
 
+let keywords = [
+  'social',
+  'market',
+  'brand',
+  'onboard',
+  'lead',
+  'seo',
+  'sell',
+  'content',
+  'analytics',
+  'growth',
+  'startup',
+  'entrepreneur',
+  'blog',
+  'tech',
+  'javascript',
+  'deep learning',
+  'artificial intelligence',
+  'machine learning',
+  'startup',
+  'code',
+  'security',
+  'nodejs',
+  'ios',
+  'swift',
+  'android',
+  'java',
+  'apple',
+  'uber',
+  'google',
+  'nvidia',
+  'microsoft',
+  'facebook',
+  'crypto',
+  'bitcoin',
+  'ethereum',
+  'litecoin',
+  'blockchain',
+  'Elon',
+  'Musk',
+  'leadership',
+  'vision',
+]
+
+function containsAny(str, substrings) {
+  for (var i = 0; i != substrings.length; i++) {
+     var substring = substrings[i];
+     if (str.indexOf(substring) != - 1) {
+       return substring;
+     }
+  }
+  return null; 
+}
+
 var statusStream = T.stream('statuses/filter', {
   follow: followList
 });
@@ -46,48 +100,11 @@ statusStream.on('tweet', function(tweet) {
     console.log('@' + tweet.user.screen_name + ' tweeted.');
     console.log(tweet.text);
     var lowercaseTweet = tweet.text.toLowerCase();
-    if (
-      lowercaseTweet.indexOf('social') === -1 &&
-      lowercaseTweet.indexOf('market') === -1 &&
-      lowercaseTweet.indexOf('brand') === -1 &&
-      lowercaseTweet.indexOf('onboard') === -1 &&
-      lowercaseTweet.indexOf('lead') === -1 &&
-      lowercaseTweet.indexOf('seo') === -1 &&
-      lowercaseTweet.indexOf('sell') === -1 &&
-      lowercaseTweet.indexOf('content') === -1 &&
-      lowercaseTweet.indexOf('analytics') === -1 &&
-      lowercaseTweet.indexOf('growth') === -1 &&
-      lowercaseTweet.indexOf('startup') === -1 &&
-      lowercaseTweet.indexOf('entrepreneur') === -1 &&
-      lowercaseTweet.indexOf('blog') === -1 &&
-      lowercaseTweet.indexOf('tech') === -1 &&
-      lowercaseTweet.indexOf('javascript') === -1 &&
-      lowercaseTweet.indexOf('deep learning') === -1 &&
-      lowercaseTweet.indexOf('artificial intelligence') === -1 &&
-      lowercaseTweet.indexOf('machine learning') === -1 &&
-      lowercaseTweet.indexOf('startup') === -1 &&
-      lowercaseTweet.indexOf('code') === -1 &&
-      lowercaseTweet.indexOf('security') === -1 &&
-      lowercaseTweet.indexOf('nodejs') === -1 &&
-      lowercaseTweet.indexOf('ios') === -1 &&
-      lowercaseTweet.indexOf('swift') === -1 &&
-      lowercaseTweet.indexOf('android') === -1 &&
-      lowercaseTweet.indexOf('java') === -1 &&
-      lowercaseTweet.indexOf('apple') === -1 &&
-      lowercaseTweet.indexOf('uber') === -1 &&
-      lowercaseTweet.indexOf('google') === -1 &&
-      lowercaseTweet.indexOf('nvidia') === -1 &&
-      lowercaseTweet.indexOf('microsoft') === -1 &&
-      lowercaseTweet.indexOf('facebook') === -1 &&
-      lowercaseTweet.indexOf('crypto') === -1 &&
-      lowercaseTweet.indexOf('bitcoin') === -1 &&
-      lowercaseTweet.indexOf('ethereum') === -1 &&
-      lowercaseTweet.indexOf('litecoin') === -1 &&
-      lowercaseTweet.indexOf('blockchain') === -1 &&
-      lowercaseTweet.indexOf('Elon') === -1 &&
-      lowercaseTweet.indexOf('Musk') === -1 &&
-      lowercaseTweet.indexOf('leadership') === -1 &&
-      lowercaseTweet.indexOf('vision') === -1 &&
+
+    var result = containsAny(lowercaseTweet, keywords);
+    console.log("String was found in substring " + result);
+
+    if (!result.length &&
       tweet.user.id !== 2246032237 && //iamjtsuccess
       tweet.user.id !== 25458378 //AskAaronLee
     ) {
