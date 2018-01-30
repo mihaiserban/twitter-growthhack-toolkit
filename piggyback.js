@@ -6,6 +6,13 @@ var argv = require('minimist')(process.argv.slice(2))
 var followList;
 var whitelistedWords;
 
+var tweets = []
+
+var lastTweetDate = new Date()
+
+var minTimeDifferenceSeconds = 300;
+var maxTimeDifferenceSeconds = 600;
+
 followList = [33057154, //JeffSheehan 
   1605891337, //GrowthHackerAm
   609718712, //GrowthHackingWP
@@ -80,6 +87,25 @@ let keywords = [
   'vision',
 ]
 
+function postTweet(tweet) {
+  lastTweetDate = new Date(); //update date
+  T.post('statuses/update', {
+    status: tweet.text
+  }, function(err, data, response) {
+    if (err) {
+      console.log('Error updating status')
+      console.log('-----');
+      return;
+    }
+    notifier.notify({
+      'title': '@' + tweet.user.screen_name + ' tweeted.',
+      'message': tweet.text
+    });
+    console.log('Status updated successfully. ' + new Date())
+    console.log('-----');
+  });
+}
+
 function containsAny(str, substrings) {
   for (var i = 0; i != substrings.length; i++) {
      var substring = substrings[i];
@@ -113,20 +139,23 @@ statusStream.on('tweet', function(tweet) {
       return;
     }
 
-    T.post('statuses/update', {
-      status: tweet.text
-    }, function(err, data, response) {
-      if (err) {
-        console.log('Error updating status')
-        console.log('-----');
-        return;
-      }
-      notifier.notify({
-        'title': '@' + tweet.user.screen_name + ' tweeted.',
-        'message': tweet.text
-      });
-      console.log('Status updated successfully. ' + new Date())
-      console.log('-----');
-    });
+    if (tweets.length < 20) {
+      tweets.push(tweet)
+    }
   }
 });
+
+
+setInterval(function() {
+  console.log('interval called')
+  var randomTimeInFuture = Math.floor(Math.random() * maxTimeDifferenceSeconds) + minTimeDifferenceSeconds;
+  var currentDate = new Date();
+
+  var difference = (currentDate - lastTweetDate) / 1000;
+
+  console.log(difference + ' needed = ' + randomTimeInFuture)
+  if (difference >= randomTimeInFuture && tweets.length > 0) {
+    var tweet = tweets.shift();
+    postTweet(tweet);
+  } 
+}, 1000);
