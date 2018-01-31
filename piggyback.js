@@ -16,8 +16,8 @@ var tweets = []
 
 var lastTweetDate = new Date()
 
-var minTimeDifferenceSeconds = 300;
-var maxTimeDifferenceSeconds = 600;
+var minTimeDifferenceSeconds = 1370;
+var maxTimeDifferenceSeconds = 1570;
 
 followList = [33057154, //JeffSheehan 
   1605891337, //GrowthHackerAm
